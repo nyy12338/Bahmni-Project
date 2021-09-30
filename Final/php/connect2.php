@@ -3,7 +3,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Headers: disable-www-authenticate");
 header("Content-Type: application/json; charset=UTF-8"); 
-$link = mysqli_connect("140.113.144.124", "openmrs-user", "password", "openmrs", 33306);
+$link = mysqli_connect();
 if( !$link ) {
     echo "MySQL 連線失敗<br>";
     return;
