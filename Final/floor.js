@@ -7,14 +7,14 @@ ErrElem = document.getElementById("err");
 // Initialize Firebase
 // TODO: Replace with your project's customized code snippet
 var firebaseConfig = {
-    apiKey: "AIzaSyDzTtrPVa296z-7cu0pOkJ7PVsDdEyqDPU",
-    authDomain: "test-508c4.firebaseapp.com",
-    databaseURL: "https://test-508c4-default-rtdb.firebaseio.com",
-    projectId: "test-508c4",
-    storageBucket: "test-508c4.appspot.com",
-    messagingSenderId: "986920374298",
-    appId: "1:986920374298:web:38b6afde8f7d778bc541a3",
-    measurementId: "G-WXYVX1BLZC"
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
   };
   // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
