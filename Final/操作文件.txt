@@ -1,0 +1,65 @@
+<index.html>
+語言:html 版本:無特別 
+line 4-9 是用於 firebase
+line 4-7 宣告 firebase會用的變數
+line 8 core firebase SDK
+line 9 加上 firebase library 的功能(messaging)
+line 10-12 是用於canvas
+line 10 讀取同路徑下的floor.jpg作為canvas背景圖
+line 11-12 創造一個canvas 並由同路徑下的floor.js畫動態圖
+
+<floor.js>
+語言:javascript 版本:無特別
+跟firebase-messaging-sw.js須放在同一路徑
+firebase-messaging-sw.js需要放在web server上才能使service worker運作
+line 1-61 為 Firebase 
+line 9-18 設定firebase的config； 跟firebase server連接的資料，
+	  資料是從Project setting->WebApp->SDK setup and configuration
+line 22-59 service worker 一定要在navigator裡面才可以跑
+line 23-25 firebase service worker注冊，注冊後才可以使用firebase messaging 功能
+line 28 access firebase messaging 功能
+line 30-42 user先要准許通知的允許，讓firebase發通知的token
+	   token是為發通知時的authorization factor
+line 45-65 網站有在開著的話，會在網站理顯示通知
+line 51-54 將收到的alarm通知，取裡面的uuid存起來(only foreground)
+           notification title為一連串的病人id
+
+line 66-184 為 canvas
+line 71-76 設定canvas的屬性 其中canvas分為兩部分 平面圖以及點擊patient會出現訊息的空白處
+           平面圖長寬為原圖大小 訊息處長100、寬圖片寬度
+line 80-108 為mouse event
+           mouse click會觸發event listener去loop patient array，如果點擊patient便執行show()
+           show()做兩件事 先去http request病人資訊，然後將資訊顯示在canvas訊息處
+line 117-160 為畫球(病人)
+             收到作為參數傳進來的病人，根據數量創造相應的object並存進array裡
+             balls[]為array 其中的object為{x:圖上座標, y:圖上座標, id:病人uuid, flag:是否收到alarm notification，收到即設1}
+             資料庫的位置與圖上位置大約差3倍，所以xy要除以3
+             flags[]為array 其中的object為{uuid:alarm傳進來的id, counter:顯示的倒數計時time}
+             loop 一遍flags array 把收到的alarm uuid flag設1
+             將uuid和球畫出來，其中flag==1時，顏色為紅色，flag==0時，顏色為綠色
+line 162-184 為動態畫圖，是要被重複執行的函式
+line 164 將先前畫面清掉
+line 166-168 畫透明背景圖覆蓋以達到重影的效果
+line 170-173 將flag object倒數counter--，當counter=0，移出array
+line 175-183 做http request，向資料庫(140.113.144.124:33306，table:test_location)抓取病人資料，預期傳回json response，並呼叫drawBalls()
+line 188 為repeat function，每1秒重複呼叫draw()函式
+
+<firebase-messaging-sw.js>
+語言:javascript 版本:無特別
+line 3 加上 firebase core 功能
+line 4-6 加上 firebase messaging 功能
+line 8-10 加上 firebase analytics 功能； 在 firebase 網站可以看一些usage report
+line 14-19 宣告firebase的config
+line 23 access firebase messaging 功能
+line 25-41 網站不在開著的時，通知會顯示在background
+
+<curl-test.sh>
+語言：shell 版本:無特別
+line 6 通知的内容，data:{
+                     notification:{
+                       title:所有alarm的user id,
+                       body:文字
+                     }
+                    }
+       to 的部分需要改成要發通知的網站的token，要傳送多個token需改成registration_ids，用逗號分隔tokens
+line 9 Authorization部分在firebase website->project settings->cloud messaging->server key的token

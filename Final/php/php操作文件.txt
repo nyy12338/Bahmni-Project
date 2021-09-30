@@ -1,0 +1,14 @@
+語言:php 版本:無特別
+利用xampp在localhost建立web server，將php檔案放入xampp/htdoc下，在網頁上輸入localhost/<filename>.php即可執行並顯示結果在網頁上
+
+<connect2.php>
+line 2-5 use for CORS
+line 6 設定連線參數 mysqli_connect(ip, username, password, database, port)
+line 14 資料庫query
+line 15-16 傳送query至遠端資料庫，將query result儲存
+line 18-47 將結果parse並儲存成雙重array，再將array包裝成json形式(json array)
+
+<update2.php>
+line 3 設定連線參數 mysqli_connect(ip, username, password, database, port)
+line 11-12 設定球的移動方向
+line 15-35 在迴圈裡執行100(counter)次update,先取原本在資料庫的x y值，分別加上dx dy後，在update進資料庫
